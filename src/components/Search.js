@@ -1,12 +1,11 @@
 class Search {
   constructor({ $target, onRandomClick, onSubmit }) {
-    this.$target = $target;
     this.onRandomClick = onRandomClick;
     this.onSubmit = onSubmit;
 
-    this.section = document.createElement('div');
+    this.section = document.createElement('section');
     this.section.className = 'search';
-    this.$target.appendChild(this.section);
+    $target.appendChild(this.section);
 
     this.handleRandomClick = this.handleRandomClick.bind(this);
     this.handleKeyup = this.handleKeyup.bind(this);
@@ -22,6 +21,8 @@ class Search {
     }
   }
   render() {
+    this.section.innerHTML = '';
+
     const randomBtn = document.createElement('span');
     randomBtn.className = 'random-btn';
     randomBtn.innerText = '🐱';
