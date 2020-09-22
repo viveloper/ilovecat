@@ -9,8 +9,38 @@
 }
 .search-result .container {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(auto-fill, 300px);
   gap: 1rem;
+  justify-content: center;
+  max-width: 1248px;
 }
 .search-result .container .item {
+}
+.search-result .container .item:hover {
+  background-color: blanchedalmond;
+}
+.search-result .container .item img {
+  display: block;
+  width: 100%;
+}
+.search-result .container .item img:hover {
+  display: block;
+  width: 100%;
+  cursor: pointer;
+}
+
+.modal-container {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #000;
+  opacity: 0.6;
+}
+.modal-container.hidden {
+  display: none;
+}
+
+.modal-container .detail-modal {
 }

@@ -1,23 +1,32 @@
 import Search from './components/Search.js';
 import SearchResult from './components/SearchResult.js';
+import DetailModal from './components/DetailModal.js';
 import * as api from './api/index.js';
 
 class App {
   constructor($target) {
     this.searchRandom = this.searchRandom.bind(this);
     this.search = this.search.bind(this);
+    this.handleCardClick = this.handleCardClick.bind(this);
+
     this.Search = new Search({
       $target,
       onRandomClick: this.searchRandom,
       onSubmit: this.search,
     });
-    this.SearchResult = new SearchResult({ $target });
+    this.SearchResult = new SearchResult({
+      $target,
+      onCardClick: this.handleCardClick,
+    });
+    this.DetailModal = new DetailModal({
+      $target,
+    });
   }
   async searchRandom() {
     console.log('search random');
     const { isError, data } = await api.fetchRandomCats();
     if (!isError) {
-      console.log(data);
+      this.SearchResult.setState({ data });
     } else {
       console.error(data);
     }
@@ -30,6 +39,9 @@ class App {
     } else {
       console.error(data);
     }
+  }
+  handleCardClick(data) {
+    this.DetailModal.setState({ data });
   }
 }
 
