@@ -10,6 +10,7 @@ class DetailModal {
     this.close = this.close.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.handleKeyup = this.handleKeyup.bind(this);
+    this.setDetailData = this.setDetailData.bind(this);
 
     this.container = document.createElement('div');
     this.container.className = 'modal-container hidden';
@@ -27,6 +28,9 @@ class DetailModal {
       ...state,
     };
     this.render();
+  }
+  setDetailData(data) {
+    this.setState({ data });
   }
   handleClick(e) {
     if (

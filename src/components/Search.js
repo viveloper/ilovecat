@@ -1,11 +1,15 @@
+import { saveData, loadData } from '../util/index.js';
+
 class Search {
   constructor({ $target, onRandomClick, onSubmit }) {
     this.onRandomClick = onRandomClick;
     this.onSubmit = onSubmit;
 
+    const history = loadData('history');
+
     this.state = {
       value: '',
-      history: [],
+      history: history ? history : [],
     };
 
     this.section = document.createElement('section');
@@ -56,6 +60,7 @@ class Search {
     this.setState({
       history: newHistory,
     });
+    saveData('history', newHistory);
   }
   render() {
     this.section.innerHTML = '';

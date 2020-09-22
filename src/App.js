@@ -26,7 +26,7 @@ class App {
     console.log('search random');
     const { isError, data } = await api.fetchRandomCats();
     if (!isError) {
-      this.SearchResult.setState({ data });
+      this.SearchResult.setSearchResult(data);
     } else {
       console.error(data);
     }
@@ -35,13 +35,13 @@ class App {
     console.log(`search: ${keyword}`);
     const { isError, data } = await api.fetchCats(keyword);
     if (!isError) {
-      this.SearchResult.setState({ data });
+      this.SearchResult.setSearchResult(data);
     } else {
       console.error(data);
     }
   }
   handleCardClick(data) {
-    this.DetailModal.setState({ data });
+    this.DetailModal.setDetailData(data);
   }
 }
 
