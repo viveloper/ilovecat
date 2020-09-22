@@ -24,20 +24,22 @@ class App {
   }
   async searchRandom() {
     console.log('search random');
+    this.SearchResult.startLoading();
     const { isError, data } = await api.fetchRandomCats();
     if (!isError) {
       this.SearchResult.setSearchResult(data);
     } else {
-      console.error(data);
+      this.SearchResult.setError(data);
     }
   }
   async search(keyword) {
     console.log(`search: ${keyword}`);
+    this.SearchResult.startLoading();
     const { isError, data } = await api.fetchCats(keyword);
     if (!isError) {
       this.SearchResult.setSearchResult(data);
     } else {
-      console.error(data);
+      this.SearchResult.setError(data);
     }
   }
   handleCardClick(data) {

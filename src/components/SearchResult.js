@@ -8,7 +8,9 @@ class SearchResult {
     const data = loadData('search-result');
 
     this.state = {
-      data: data ? data : [],
+      loading: false,
+      data,
+      error: null,
     };
 
     this.section = document.createElement('section');
@@ -29,8 +31,26 @@ class SearchResult {
   }
   setSearchResult(data) {
     console.log(data);
-    this.setState({ data });
+    this.setState({
+      loading: false,
+      data,
+      error: null,
+    });
     saveData('search-result', data);
+  }
+  startLoading() {
+    this.setState({
+      loading: true,
+      data: null,
+      error: null,
+    });
+  }
+  setError(error) {
+    this.setState({
+      loading: false,
+      data: null,
+      error,
+    });
   }
   handleCardClick(e) {
     if (e.target.tagName.toLowerCase() === 'img') {
@@ -44,8 +64,30 @@ class SearchResult {
 
     this.section.innerHTML = '';
 
-    const { data } = this.state;
+    const { loading, data, error } = this.state;
     console.log(this.state);
+
+    if (loading) {
+      const loadingMsg = document.createElement('h2');
+      loadingMsg.innerText = '검색중...';
+      this.section.appendChild(loadingMsg);
+      return;
+    }
+    if (error) {
+      const errorMsg = document.createElement('h2');
+      errorMsg.innerText = error;
+      this.section.appendChild(errorMsg);
+      return;
+    }
+    if (!data) {
+      return;
+    }
+    if (data.length === 0) {
+      const emptyMsg = document.createElement('h2');
+      emptyMsg.innerText = '검색 결과가 없습니다.';
+      this.section.appendChild(emptyMsg);
+      return;
+    }
 
     const container = document.createElement('div');
     container.className = 'container';

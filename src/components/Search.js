@@ -36,6 +36,9 @@ class Search {
   }
   handleKeyup(e) {
     if (e.keyCode === 13 && e.target.value !== '') {
+      this.setState({
+        value: e.target.value,
+      });
       this.search(e.target.value);
     }
   }
@@ -55,8 +58,10 @@ class Search {
   }
   search(keyword) {
     this.onSubmit(keyword);
-    const newHistory = this.state.history.filter((value) => value !== keyword);
-    newHistory.unshift(keyword);
+    const newHistory = [keyword]
+      .concat(this.state.history.filter((value) => value !== keyword))
+      .slice(0, 5);
+
     this.setState({
       history: newHistory,
     });
