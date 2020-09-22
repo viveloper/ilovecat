@@ -1,8 +1,26 @@
+body {
+  margin: 0;
+}
+
 .search {
 }
 .search .random-btn {
 }
+.search .random-btn:hover {
+  cursor: pointer;
+}
 .search .search-input {
+}
+.search .history {
+}
+.search .history .history-item {
+  display: inline-block;
+  background-color: rgb(255, 153, 116);
+  padding: 4px;
+  border-radius: 8px;
+}
+.search .history .history-item:hover {
+  cursor: pointer;
 }
 
 .search-result {
@@ -30,17 +48,46 @@
 }
 
 .modal-container {
-  position: absolute;
+  position: fixed;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
-  background-color: #000;
-  opacity: 0.6;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .modal-container.hidden {
   display: none;
 }
-
-.modal-container .detail-modal {
+.modal-container .overlay {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: #000;
+  opacity: 0.6;
+}
+.modal-container .content {
+  width: 600px;
+  background-color: #fff;
+  z-index: 1;
+}
+@media (max-width: 600px) {
+  .modal-container .content {
+    width: 400px;
+    height: 400px;
+  }
+}
+.modal-container .content .modal-content-header {
+  text-align: right;
+}
+.modal-container .content .modal-content-header span {
+  display: inline-block;
+  padding: 4px 8px;
+}
+.modal-container .content .modal-content-header span:hover {
+  cursor: pointer;
+}
+.modal-container .content img {
+  width: 100%;
 }

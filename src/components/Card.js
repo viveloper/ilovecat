@@ -16,15 +16,21 @@ class Card {
       data: { breeds, url, id },
     } = this.state;
 
-    const name = breeds.length > 0 ? breeds[0].name : '정보없음';
-    const origin = breeds.length > 0 ? breeds[0].origin : '정보없음';
-    const description = breeds.length > 0 ? breeds[0].description : '정보없음';
+    const name = breeds[0]?.name;
+    const origin = breeds[0]?.origin;
+    const description = breeds[0]?.description;
 
     this.article.innerHTML = `
       <img src="${url}" />
-      <span>${name}</span>
-      <span>${origin}</span>
-      <p>${description}</p>
+      ${
+        breeds.length > 0
+          ? `
+            <span>${name}</span>
+            <span>${origin}</span>
+            <p>${description}</p>
+          `
+          : ``
+      }
     `;
 
     this.article.dataset.id = id;
