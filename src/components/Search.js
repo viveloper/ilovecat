@@ -70,6 +70,9 @@ class Search {
   render() {
     this.section.innerHTML = '';
 
+    const formGroup = document.createElement('div');
+    formGroup.className = 'form-group';
+
     const randomBtn = document.createElement('span');
     randomBtn.className = 'random-btn';
     randomBtn.innerText = '🐱';
@@ -95,9 +98,15 @@ class Search {
       .join('');
     history.addEventListener('click', this.handleHistoryClick);
 
-    this.section.appendChild(randomBtn);
-    this.section.appendChild(searchInput);
+    const themeBtn = document.createElement('span');
+    themeBtn.className = 'theme-btn';
+    themeBtn.innerText = '🌕';
+
+    formGroup.appendChild(randomBtn);
+    formGroup.appendChild(searchInput);
+    this.section.appendChild(formGroup);
     this.section.appendChild(history);
+    this.section.appendChild(themeBtn);
   }
 }
 
