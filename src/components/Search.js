@@ -1,4 +1,4 @@
-import { saveData, loadData } from '../util/index.js';
+import { saveData, loadData } from '../util/storage.js';
 
 class Search {
   constructor({ $target, onRandomClick, onSubmit }) {

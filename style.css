@@ -65,10 +65,19 @@ body {
   display: block;
   width: 100%;
 }
+.search-result .container .item img.lazy {
+  width: 100%;
+  background-color: #eee;
+  border-radius: 8px;
+}
 .search-result .container .item img:hover {
   display: block;
   width: 100%;
   cursor: pointer;
+}
+.search-result .scroll-observer {
+  width: 100%;
+  height: 16px;
 }
 
 .modal-container {

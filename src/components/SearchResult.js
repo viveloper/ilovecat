@@ -1,9 +1,10 @@
-import { loadData, saveData } from '../util/index.js';
+import { saveData, loadData } from '../util/storage.js';
 import Card from './Card.js';
 
 class SearchResult {
-  constructor({ $target, onCardClick }) {
+  constructor({ $target, onCardClick, onScrollEnd }) {
     this.onCardClick = onCardClick;
+    this.onScrollEnd = onScrollEnd;
 
     const data = loadData('search-result');
 
@@ -19,6 +20,7 @@ class SearchResult {
 
     this.handleCardClick = this.handleCardClick.bind(this);
     this.setSearchResult = this.setSearchResult.bind(this);
+    this.addSearchResult = this.addSearchResult.bind(this);
 
     this.render();
   }
@@ -38,10 +40,17 @@ class SearchResult {
     });
     saveData('search-result', data);
   }
+  addSearchResult(data) {
+    console.log(data);
+    this.setState({
+      loading: false,
+      data: [...this.state.data, ...data],
+      error: null,
+    });
+  }
   startLoading() {
     this.setState({
       loading: true,
-      data: null,
       error: null,
     });
   }
@@ -69,12 +78,14 @@ class SearchResult {
 
     if (loading) {
       const loadingMsg = document.createElement('h2');
+      loadingMsg.style.textAlign = 'center';
       loadingMsg.innerText = '검색중...';
       this.section.appendChild(loadingMsg);
       return;
     }
     if (error) {
       const errorMsg = document.createElement('h2');
+      errorMsg.style.textAlign = 'center';
       errorMsg.innerText = error;
       this.section.appendChild(errorMsg);
       return;
@@ -84,6 +95,7 @@ class SearchResult {
     }
     if (data.length === 0) {
       const emptyMsg = document.createElement('h2');
+      emptyMsg.style.textAlign = 'center';
       emptyMsg.innerText = '검색 결과가 없습니다.';
       this.section.appendChild(emptyMsg);
       return;
@@ -95,7 +107,22 @@ class SearchResult {
 
     data.map((cat) => new Card({ $target: container, data: cat }));
 
+    const scrollObserver = document.createElement('div');
+    scrollObserver.className = 'scroll-observer';
+
+    // infinitt scroll
+    const option = { threshold: 0 };
+    const io = new IntersectionObserver((entries, observer) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          this.onScrollEnd();
+        }
+      });
+    }, option);
+    io.observe(scrollObserver);
+
     this.section.appendChild(container);
+    this.section.appendChild(scrollObserver);
   }
 }
 

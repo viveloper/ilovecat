@@ -8,6 +8,7 @@ class App {
     this.searchRandom = this.searchRandom.bind(this);
     this.search = this.search.bind(this);
     this.handleCardClick = this.handleCardClick.bind(this);
+    this.additionalSearch = this.additionalSearch.bind(this);
 
     this.Search = new Search({
       $target,
@@ -17,6 +18,7 @@ class App {
     this.SearchResult = new SearchResult({
       $target,
       onCardClick: this.handleCardClick,
+      onScrollEnd: this.additionalSearch,
     });
     this.DetailModal = new DetailModal({
       $target,
@@ -38,6 +40,16 @@ class App {
     const { isError, data } = await api.fetchCats(keyword);
     if (!isError) {
       this.SearchResult.setSearchResult(data);
+    } else {
+      this.SearchResult.setError(data);
+    }
+  }
+  async additionalSearch() {
+    const keyword = this.Search.state.value;
+    this.SearchResult.startLoading();
+    const { isError, data } = await api.fetchCats(keyword);
+    if (!isError) {
+      this.SearchResult.addSearchResult(data);
     } else {
       this.SearchResult.setError(data);
     }
