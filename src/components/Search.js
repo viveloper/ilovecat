@@ -45,31 +45,11 @@ class Search extends Component {
 
     const inputEl = this.el.querySelector('input');
     inputEl.addEventListener('keyup', this.handleKeyup);
-
-    // this.el.innerHTML = '';
-
-    // const randomBtn = document.createElement('span');
-    // randomBtn.className = 'random-btn';
-    // randomBtn.innerText = '🐱';
-
-    // const searchBoxWrapper = document.createElement('div');
-    // searchBoxWrapper.className = 'search-box-wrapper';
-
-    // const searchBox = document.createElement('input');
-    // searchBox.className = 'search-box';
-    // searchBox.type = 'text';
-    // searchBox.placeholder = '고양이를 검색하세요.';
-    // searchBox.autofocus = true;
-    // searchBox.value = this.state.value;
-    // searchBox.addEventListener('keyup', this.handleKeyup);
-
-    // const recentKeywords = document.createElement('div');
-    // recentKeywords.className = 'recent-keywords';
-
-    // searchBoxWrapper.appendChild(searchBox);
-    // searchBoxWrapper.appendChild(recentKeywords);
-    // this.el.appendChild(randomBtn);
-    // this.el.appendChild(searchBoxWrapper);
+    inputEl.addEventListener('focus', () => {
+      if (inputEl.value !== '') {
+        this.setState({ value: '' });
+      }
+    });
   }
 }
 

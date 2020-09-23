@@ -15,12 +15,12 @@ class Card extends Component {
   render() {
     console.log('render Card Component');
 
-    const { url, breeds } = this.state.data;
+    const { url, breeds, id } = this.state.data;
     const { name, origin } =
       breeds.length > 0 ? breeds[0] : { name: '정보없음', origin: '정보없음' };
 
     this.el.innerHTML = `
-      <img class="card-image lazy" src="${url}" />
+      <img class="card-image lazy" src="${url}" data-id="${id}" />
       <div class="card-info">
         <p class="cat-name">${name}</p>
         <p class="cat-origin">${origin}</p>

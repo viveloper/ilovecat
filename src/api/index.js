@@ -42,6 +42,21 @@ export const fetchCats = async (keyword) => {
   }
 };
 
+export const fetchCat = async (id) => {
+  try {
+    const result = await request(`${API_ENDPOINT}/images/${id}`);
+    return {
+      isError: false,
+      data: result,
+    };
+  } catch (e) {
+    return {
+      isError: true,
+      data: e,
+    };
+  }
+};
+
 export const fetchRandomCats = async () => {
   // 랜덤으로 20개의 고양이 사진을 리턴한다.
   try {

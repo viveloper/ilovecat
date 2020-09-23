@@ -2,19 +2,27 @@ import Component from './Component.js';
 import Card from './Card.js';
 
 class SearchResult extends Component {
-  constructor({ $target }) {
+  constructor({ $target, onCardClick }) {
     super({
       $target,
       tagName: 'section',
       className: 'results-section',
     });
+
+    this.onCardClick = onCardClick;
+
     this.state = {
       loading: false,
       data: null,
       error: null,
     };
+
+    this.handleCardClick = this.handleCardClick.bind(this);
+    this.el.addEventListener('click', this.handleCardClick);
+
     this.render();
   }
+
   setResultData(data) {
     this.setState({
       loading: false,
@@ -22,6 +30,13 @@ class SearchResult extends Component {
       error: null,
     });
   }
+
+  handleCardClick(e) {
+    if (e.target.tagName.toLowerCase() === 'img') {
+      this.onCardClick(e.target.dataset.id);
+    }
+  }
+
   render() {
     console.log('render SearchResult Component');
 
@@ -42,6 +57,7 @@ class SearchResult extends Component {
       return;
     }
 
+    this.el.innerHTML = ``;
     const cardContainer = document.createElement('div');
     cardContainer.className = 'card-container';
     data.map((cat) => new Card({ $target: cardContainer, data: cat }));
