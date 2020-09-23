@@ -26,6 +26,7 @@ class App {
   }
   async searchRandom() {
     console.log('search random');
+    this.Search.setInputValue('');
     this.SearchResult.startLoading();
     const { isError, data } = await api.fetchRandomCats();
     if (!isError) {
@@ -46,6 +47,7 @@ class App {
   }
   async additionalSearch() {
     const keyword = this.Search.state.value;
+    if (!keyword) return;
     this.SearchResult.startLoading();
     const { isError, data } = await api.fetchCats(keyword);
     if (!isError) {

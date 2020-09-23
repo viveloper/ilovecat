@@ -11,3 +11,7 @@ export const loadData = (key) => {
   if (!data) return null;
   return data;
 };
+
+export const removeData = (key) => {
+  localStorage.removeItem(key);
+};

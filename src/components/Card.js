@@ -1,5 +1,5 @@
 class Card {
-  constructor({ $target, data }) {
+  constructor({ $target, data, key }) {
     this.state = {
       data,
     };

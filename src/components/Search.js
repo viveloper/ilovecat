@@ -31,6 +31,11 @@ class Search {
     };
     this.render();
   }
+  setInputValue(value) {
+    this.setState({
+      value,
+    });
+  }
   handleRandomClick() {
     this.onRandomClick();
   }

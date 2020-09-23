@@ -1,4 +1,4 @@
-import { saveData, loadData } from '../util/storage.js';
+import { saveData, loadData, removeData } from '../util/storage.js';
 import Card from './Card.js';
 
 class SearchResult {
@@ -38,7 +38,8 @@ class SearchResult {
       data,
       error: null,
     });
-    saveData('search-result', data);
+    if (data.length > 0) saveData('search-result', data);
+    else removeData('search-result');
   }
   addSearchResult(data) {
     console.log(data);
@@ -74,36 +75,48 @@ class SearchResult {
     this.section.innerHTML = '';
 
     const { loading, data, error } = this.state;
-    console.log(this.state);
 
-    if (loading) {
-      const loadingMsg = document.createElement('h2');
-      loadingMsg.style.textAlign = 'center';
-      loadingMsg.innerText = '검색중...';
-      this.section.appendChild(loadingMsg);
-      return;
-    }
-    if (error) {
-      const errorMsg = document.createElement('h2');
-      errorMsg.style.textAlign = 'center';
-      errorMsg.innerText = error;
-      this.section.appendChild(errorMsg);
-      return;
-    }
-    if (!data) {
-      return;
-    }
-    if (data.length === 0) {
-      const emptyMsg = document.createElement('h2');
-      emptyMsg.style.textAlign = 'center';
-      emptyMsg.innerText = '검색 결과가 없습니다.';
-      this.section.appendChild(emptyMsg);
-      return;
-    }
+    const loadingOverlay = document.createElement('div');
+    loadingOverlay.className = 'loading-wrapper';
+    loadingOverlay.style.display = 'none';
+    const loadingImg = document.createElement('img');
+    loadingImg.className = 'loading-img';
+    loadingImg.style.display = 'none';
+    loadingImg.src = '/src/img/loading.gif';
+
+    const errorMsg = document.createElement('h2');
+    errorMsg.style.textAlign = 'center';
+    errorMsg.style.display = 'none';
+    errorMsg.innerText = error;
+
+    const emptyMsg = document.createElement('h2');
+    emptyMsg.style.textAlign = 'center';
+    emptyMsg.style.display = 'none';
+    emptyMsg.innerText = '검색 결과가 없습니다.';
 
     const container = document.createElement('div');
     container.className = 'container';
     container.addEventListener('click', this.handleCardClick);
+
+    this.section.appendChild(container);
+    this.section.appendChild(loadingOverlay);
+    this.section.appendChild(loadingImg);
+    this.section.appendChild(errorMsg);
+    this.section.appendChild(emptyMsg);
+
+    if (loading) {
+      loadingOverlay.style.display = 'block';
+      loadingImg.style.display = 'block';
+    }
+    if (error) {
+      emptyMsg.style.display = 'block';
+      return;
+    }
+    if (!data) return;
+    if (data.length === 0) {
+      emptyMsg.style.display = 'block';
+      return;
+    }
 
     data.map((cat) => new Card({ $target: container, data: cat }));
 
@@ -115,13 +128,12 @@ class SearchResult {
     const io = new IntersectionObserver((entries, observer) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          this.onScrollEnd();
+          !loading && this.onScrollEnd();
         }
       });
     }, option);
     io.observe(scrollObserver);
 
-    this.section.appendChild(container);
     this.section.appendChild(scrollObserver);
   }
 }
