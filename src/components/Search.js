@@ -1,5 +1,7 @@
 import Component from './Component.js';
 import { loadData, saveData } from '../util/storage.js';
+import Debouncer from '../util/debouncer.js';
+import Throttler from '../util/throttler.js';
 
 class Search extends Component {
   constructor({ $target, onSearch, onRandomSearch }) {
@@ -23,6 +25,9 @@ class Search extends Component {
 
     this.el.addEventListener('click', this.handleClick);
 
+    this.keyupDebouncer = new Debouncer();
+    this.keyupThrottler = new Throttler();
+
     this.render();
   }
 
@@ -35,6 +40,8 @@ class Search extends Component {
       this.submit(keyword);
       return;
     }
+    // this.keyupDebouncer.debounce(() => console.log('debounce'), 250);
+    // this.keyupThrottler.throttle(() => console.log('throttle'), 250);
   }
 
   handleClick(e) {
