@@ -57,6 +57,10 @@ body {
   margin-right: 8px;
 }
 
+.keyword:hover {
+  cursor: pointer;
+}
+
 .random-btn {
   font-size: 50px;
   margin-right: 10px;
@@ -141,16 +145,23 @@ body {
   flex-direction: column;
 
   height: 70%;
-  width: 30%;
+  width: 50%;
   padding: 10px;
   background-color: var(--background);
   color: var(--text-color);
 
+  border-radius: 5px;
+
   /* TODO: box-shadow */
+}
+@media (max-width: 768px) {
+  .modal-contents {
+    width: 100%;
+  }
 }
 
 .modal-image {
-  height: 60%;
+  width: 100%;
 }
 
 .modal-header {
