@@ -9,6 +9,7 @@ class App {
     this.handleSearch = this.handleSearch.bind(this);
     this.handleCardClick = this.handleCardClick.bind(this);
     this.handleRandomSearch = this.handleRandomSearch.bind(this);
+    this.handleScrollFetch = this.handleScrollFetch.bind(this);
 
     this.Search = new Search({
       $target,
@@ -18,6 +19,7 @@ class App {
     this.SearchResult = new SearchResult({
       $target,
       onCardClick: this.handleCardClick,
+      onScrollFetch: this.handleScrollFetch,
     });
     this.DetailModal = new DetailModal({ $target });
     this.Loading = new Loading({ $target });
@@ -52,6 +54,20 @@ class App {
     const { isError, data } = await fetchRandomCats();
     if (!isError) {
       this.SearchResult.setResultData(data);
+      this.Loading.hiddenLoading();
+    } else {
+      console.error(data);
+      this.Loading.hiddenLoading();
+    }
+  }
+
+  async handleScrollFetch() {
+    const keyword = this.Search.currentKeyword;
+    if (!keyword) return;
+    this.Loading.showLoading();
+    const { isError, data } = await fetchCats(keyword);
+    if (!isError) {
+      this.SearchResult.addResultData(data);
       this.Loading.hiddenLoading();
     } else {
       console.error(data);

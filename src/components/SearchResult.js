@@ -1,8 +1,9 @@
 import Component from './Component.js';
 import Card from './Card.js';
+import { imageLazyLoad, scrollFetch } from '../util/scroll.js';
 
 class SearchResult extends Component {
-  constructor({ $target, onCardClick }) {
+  constructor({ $target, onCardClick, onScrollFetch }) {
     super({
       $target,
       tagName: 'section',
@@ -10,6 +11,7 @@ class SearchResult extends Component {
     });
 
     this.onCardClick = onCardClick;
+    this.onScrollFetch = onScrollFetch;
 
     this.state = {
       loading: false,
@@ -27,6 +29,14 @@ class SearchResult extends Component {
     this.setState({
       loading: false,
       data,
+      error: null,
+    });
+  }
+
+  addResultData(data) {
+    this.setState({
+      loading: false,
+      data: this.state.data.concat(data),
       error: null,
     });
   }
@@ -58,11 +68,24 @@ class SearchResult extends Component {
     }
 
     this.el.innerHTML = ``;
+
     const cardContainer = document.createElement('div');
     cardContainer.className = 'card-container';
     data.map((cat) => new Card({ $target: cardContainer, data: cat }));
 
+    const scrollFetchArea = document.createElement('div');
+    scrollFetchArea.className = 'scroll-fetch-area';
+    scrollFetchArea.style.width = '100%';
+    scrollFetchArea.style.height = '8px';
+
     this.el.appendChild(cardContainer);
+    this.el.appendChild(scrollFetchArea);
+
+    this.el.querySelectorAll('.cat-card img.card-image').forEach((imgEl) => {
+      imageLazyLoad(imgEl);
+    });
+
+    scrollFetch(scrollFetchArea, this.onScrollFetch);
   }
 }
 

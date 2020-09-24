@@ -62,6 +62,10 @@ class Search extends Component {
     });
   }
 
+  get currentKeyword() {
+    return this.state.value;
+  }
+
   render() {
     console.log('render Search Component');
 
