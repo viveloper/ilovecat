@@ -1,6 +1,7 @@
 import Component from './Component.js';
 import Card from './Card.js';
 import { imageLazyLoad, scrollFetch } from '../util/scroll.js';
+import { loadData, saveData } from '../util/storage.js';
 
 class SearchResult extends Component {
   constructor({ $target, onCardClick, onScrollFetch }) {
@@ -15,7 +16,7 @@ class SearchResult extends Component {
 
     this.state = {
       loading: false,
-      data: null,
+      data: loadData('search-result'),
       error: null,
     };
 
@@ -31,14 +32,17 @@ class SearchResult extends Component {
       data,
       error: null,
     });
+    saveData('search-result', data);
   }
 
   addResultData(data) {
+    const newData = this.state.data.concat(data);
     this.setState({
       loading: false,
-      data: this.state.data.concat(data),
+      data: newData,
       error: null,
     });
+    saveData('search-result', newData);
   }
 
   handleCardClick(e) {

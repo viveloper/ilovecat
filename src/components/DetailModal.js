@@ -61,12 +61,14 @@ class DetailModal extends Component {
     this.el.classList.remove('hidden');
 
     const { url } = data;
-    const { name, origin, temperament } = data.breeds[0]
-      ? data.breeds[0]
-      : { name: '정보없음', origin: '정보없음', temperament: '정보없음' };
-    const { imperial, metric } = data.breeds[0]
-      ? data.breeds[0].weight
-      : { imperial: '정보없음', metric: '정보없음' };
+    const { name, origin, temperament } =
+      data.breeds && data.breeds[0]
+        ? data.breeds[0]
+        : { name: '정보없음', origin: '정보없음', temperament: '정보없음' };
+    const { imperial, metric } =
+      data.breeds && data.breeds[0]
+        ? data.breeds[0].weight
+        : { imperial: '정보없음', metric: '정보없음' };
 
     this.el.innerHTML = `
       <div class="overlay"></div>

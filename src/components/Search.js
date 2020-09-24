@@ -1,4 +1,5 @@
 import Component from './Component.js';
+import { loadData, saveData } from '../util/storage.js';
 
 class Search extends Component {
   constructor({ $target, onSearch, onRandomSearch }) {
@@ -8,9 +9,10 @@ class Search extends Component {
       className: 'searching-section',
     });
 
+    const keywords = loadData('keywords');
     this.state = {
       value: '',
-      keywords: [],
+      keywords: keywords ? keywords : [],
     };
 
     this.onSearch = onSearch;
@@ -43,17 +45,22 @@ class Search extends Component {
       });
       this.submit(keyword);
     } else if (e.target.className === 'random-btn') {
+      this.setState({
+        value: '',
+      });
       this.onRandomSearch();
     }
   }
 
   submit(keyword) {
+    const newKeywords = [keyword]
+      .concat(this.state.keywords.filter((item) => item !== keyword))
+      .slice(0, 5);
     this.setState({
-      keywords: [keyword]
-        .concat(this.state.keywords.filter((item) => item !== keyword))
-        .slice(0, 5),
+      keywords: newKeywords,
     });
     this.onSearch(keyword);
+    saveData('keywords', newKeywords);
   }
 
   setKeyword(keyword) {
