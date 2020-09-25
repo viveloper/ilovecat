@@ -69,6 +69,41 @@ body {
   cursor: pointer;
 }
 
+.keywords {
+  /* z-index: 1; */
+  font-size: 1.5rem;
+  background-color: white;
+  display: none;
+  position: absolute;
+  top: 42px;
+  left: 50%;
+  width: 49.25%;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  transform: translateX(calc(-50% + 30px));
+}
+
+.keywords li:hover {
+  cursor: pointer;
+  background-color: blue;
+  color: white;
+}
+
+.keywords .active {
+  background-color: blue;
+  color: white;
+}
+
+.keywords ul {
+  padding: 0;
+  margin: 0;
+}
+
+.keywords li {
+  list-style: none;
+  padding-left: 10px;
+}
+
 .results-section {
   margin-top: 3%;
 }

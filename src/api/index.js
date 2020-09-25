@@ -72,3 +72,20 @@ export const fetchRandomCats = async () => {
     };
   }
 };
+
+export const fetchKeywords = async (keyword) => {
+  try {
+    const result = await request(
+      `https://jf3iw5iguk.execute-api.ap-northeast-2.amazonaws.com/dev/api/cats/keywords?q=${keyword}`
+    );
+    return {
+      isError: false,
+      data: result,
+    };
+  } catch (e) {
+    return {
+      isError: true,
+      data: e,
+    };
+  }
+};

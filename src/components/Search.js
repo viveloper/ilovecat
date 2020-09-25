@@ -4,7 +4,14 @@ import Debouncer from '../util/debouncer.js';
 import Throttler from '../util/throttler.js';
 
 class Search extends Component {
-  constructor({ $target, onSearch, onRandomSearch }) {
+  constructor({
+    $target,
+    onSearch,
+    onRandomSearch,
+    onKeywordChange,
+    onArrowUp,
+    onArrowDown,
+  }) {
     super({
       $target,
       tagName: 'section',
@@ -19,6 +26,9 @@ class Search extends Component {
 
     this.onSearch = onSearch;
     this.onRandomSearch = onRandomSearch;
+    this.onKeywordChange = onKeywordChange;
+    this.onArrowUp = onArrowUp;
+    this.onArrowDown = onArrowDown;
 
     this.handleKeyup = this.handleKeyup.bind(this);
     this.handleClick = this.handleClick.bind(this);
@@ -27,6 +37,24 @@ class Search extends Component {
 
     this.keyupDebouncer = new Debouncer();
     this.keyupThrottler = new Throttler();
+
+    this.el.innerHTML = `
+      <span class="random-btn">🐱</span>
+      <div class="search-box-wrapper">
+        <input class="search-box" type="text" placeholder="고양이를 검색하세요." value="${this.state.value}" autofocus />
+        <div class="recent-keywords"></div>
+      </div>
+    `;
+
+    this.inputEl = this.el.querySelector('input');
+    this.inputEl.addEventListener('keyup', this.handleKeyup);
+    this.inputEl.addEventListener('focus', () => {
+      if (this.inputEl.value !== '') {
+        this.setState({ value: '' });
+      }
+    });
+
+    this.recentKeywordsEl = this.el.querySelector('.recent-keywords');
 
     this.render();
   }
@@ -40,8 +68,20 @@ class Search extends Component {
       this.submit(keyword);
       return;
     }
-    // this.keyupDebouncer.debounce(() => console.log('debounce'), 250);
-    // this.keyupThrottler.throttle(() => console.log('throttle'), 250);
+    if (e.key === 'ArrowLeft') return;
+    if (e.key === 'ArrowRight') return;
+    if (e.key === 'ArrowUp') {
+      this.onArrowUp();
+      return;
+    }
+    if (e.key === 'ArrowDown') {
+      this.onArrowDown();
+      return;
+    }
+    this.keyupDebouncer.debounce(
+      () => this.onKeywordChange(e.target.value),
+      250
+    );
   }
 
   handleClick(e) {
@@ -85,28 +125,16 @@ class Search extends Component {
 
     const { value, keywords } = this.state;
 
-    this.el.innerHTML = `
-      <span class="random-btn">🐱</span>
-      <div class="search-box-wrapper">
-        <input class="search-box" type="text" placeholder="고양이를 검색하세요." value="${value}" autofocus />
-        <div class="recent-keywords">
-          ${keywords
-            .map(
-              (keyword) =>
-                `<span class="keyword" data-keyword="${keyword}">${keyword}</span>`
-            )
-            .join('')}
-        </div>
-      </div>
-    `;
+    this.inputEl.value = value;
 
-    const inputEl = this.el.querySelector('input');
-    inputEl.addEventListener('keyup', this.handleKeyup);
-    inputEl.addEventListener('focus', () => {
-      if (inputEl.value !== '') {
-        this.setState({ value: '' });
-      }
-    });
+    this.recentKeywordsEl.innerHTML = `
+      ${keywords
+        .map(
+          (keyword) =>
+            `<span class="keyword" data-keyword="${keyword}">${keyword}</span>`
+        )
+        .join('')}
+    `;
   }
 }
 
