@@ -24,7 +24,7 @@ export const fetchCats = async (keyword) => {
     const breeds = await request(`${API_ENDPOINT}/breeds/search?q=${keyword}`);
     const requests = breeds.map(async (breed) => {
       return await request(
-        `${API_ENDPOINT}/images/search?limit=20&breed_ids=${breed.id}`
+        `${API_ENDPOINT}/images/search?limit=20&page=0&order=Desc&breed_ids=${breed.id}`
       );
     });
     const responses = await Promise.all(requests);
